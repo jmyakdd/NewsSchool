@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#19bc00</color>
+    <color name="colorPrimaryDark">#19bc00</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="app_color">#19bc00</color>
+    <color name="button_pressed">#128900</color>
+    <color name="button_unpressed">#1eff00</color>
+    <color name="divider">#b3b3b3</color>
+</resources>

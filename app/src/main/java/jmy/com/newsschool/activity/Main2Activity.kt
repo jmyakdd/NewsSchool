@@ -1,9 +1,13 @@
 package jmy.com.newsschool.activity
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -14,6 +18,7 @@ import jmy.com.newsschool.fragment.BbsFragment
 import jmy.com.newsschool.fragment.HomeFragment
 import jmy.com.newsschool.fragment.MineFragment
 import jmy.com.newsschool.fragment.NewsFragment
+import jmy.com.newsschool.util.ShortCut
 import kotlinx.android.synthetic.main.activity_main2.*
 import kotlinx.android.synthetic.main.content_main2.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -32,6 +37,9 @@ class Main2Activity : BaseTitleActivity(), BottomNavigationView.OnNavigationItem
     var select = 0
 
     var map = HashMap<String, String>()
+    var permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.INSTALL_SHORTCUT)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +56,25 @@ class Main2Activity : BaseTitleActivity(), BottomNavigationView.OnNavigationItem
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        ShortCut.createShortCut(this,R.mipmap.ic_launcher,R.string.app_name)
+        for( p in permissions){
+            if(ContextCompat.checkSelfPermission(this,p)!=PackageManager.PERMISSION_GRANTED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    this.requestPermissions(permissions,100)
+                    return
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        for( p in grantResults){
+            if(p!=PackageManager.PERMISSION_GRANTED){
+                return
+            }
+        }
+        ShortCut.createShortCut(this,R.mipmap.ic_launcher,R.string.app_name)
     }
 
     private fun initFragment() {

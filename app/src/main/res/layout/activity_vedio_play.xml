@@ -23,17 +23,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#00ffffff">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:padding="10dp"
-                    android:layout_height="wrap_content">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
+
+        <SeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:maxHeight="4dp"
+            android:minHeight="4dp"
+            android:progressDrawable="@drawable/seek_bar_bg" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

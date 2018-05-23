@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import jmy.com.newsschool.R
+import jmy.com.newsschool.Test
 import jmy.com.newsschool.base.BaseTitleActivity
 import jmy.com.newsschool.customerview.BottomNavigationViewHelper
 import jmy.com.newsschool.fragment.BbsFragment
@@ -57,6 +58,7 @@ class Main2Activity : BaseTitleActivity(), BottomNavigationView.OnNavigationItem
 
         nav_view.setNavigationItemSelectedListener(this)
         ShortCut.createShortCut(this,R.mipmap.ic_launcher,R.string.app_name)
+        Test.get(0)
         for( p in permissions){
             if(ContextCompat.checkSelfPermission(this,p)!=PackageManager.PERMISSION_GRANTED){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

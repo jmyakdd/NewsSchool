@@ -66,5 +66,4 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.classic.adapter:commonadapter:2.0'
     implementation 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
-    implementation 'com.amap.api:3dmap:latest.integration'
 }

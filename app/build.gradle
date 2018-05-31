@@ -18,6 +18,9 @@ android {
                 cppFlags ""
             }
         }
+        sourceSets.main {
+            jniLibs.srcDirs = ["libs"]    //so指定存放目录,生成so文件后需要手动将其拷贝到该目录
+        }
     }
     signingConfigs {
         release {

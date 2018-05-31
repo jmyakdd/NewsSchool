@@ -5,5 +5,5 @@ package jmy.com.newsschool;
  */
 
 public class Main {
-
+    byte[]b = new byte[1024];
 }

@@ -1,56 +1,99 @@
 package jmy.com.newsschool.activity
 
+import android.app.ProgressDialog
 import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Message
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
 import jmy.com.newsschool.R
+import jmy.com.newsschool.adapter.MapLoadAdapter
+import jmy.com.newsschool.bean.ProviceData
 import jmy.com.newsschool.data.MapData
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import jmy.com.newsschool.util.MapCopyUtil
+import jmy.com.newsschool.util.SPUtil
+import kotlinx.android.synthetic.main.activity_main3.*
 
 
 class Main3Activity : AppCompatActivity() {
-    private val ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION"
     private val usb_path = "/mnt/usb_storage/USB_DISK2/udisk0"
+    private val path = Environment.getExternalStorageDirectory().absolutePath
+    private var data = ArrayList<ProviceData>()
+    private lateinit var dialog: ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main3)
-
-//        copyFile(usb_path + "/test", Environment.getExternalStorageDirectory().absolutePath + "/test")
-
-        Log.e("test", MapData.map.size.toString())
-    }
-
-    private fun copyResourse(fromFile: String, toFile: String) {
-        var file = File(fromFile)
-        if (!file.exists()) {
-            Log.e("test", "源目录不存在")
-            return
+        dialog = ProgressDialog(this)
+        dialog.setTitle("标题")
+        dialog.setMessage("信息")
+        dialog.setCancelable(false)
+        for (key in MapData.map.keys) {
+            var proviceData = ProviceData()
+            proviceData.proviceKey = key
+            proviceData.proviceValue = MapData.map.get(key)
+            var isLoad: Boolean = SPUtil.get(this, proviceData.proviceValue, false) as Boolean
+            proviceData.isLoad = isLoad
+            data.add(proviceData)
         }
-        var file1 = File(toFile)
-        if (!file1.exists()) {
-            file1.mkdirs()
-        }
-        var files = file.listFiles()
-        for (f in files) {
-            copyFiles(f.absolutePath, toFile + "/" + f.name)
-        }
-    }
-
-    private fun copyFiles(fromFile: String, toFile: String) {
-        try {
-            var input = FileInputStream(fromFile)
-            var output = FileOutputStream(toFile)
-            var b = ByteArray(1024)
-            while (input.read(b) > 0) {
-                output.write(b, 0, b.size)
+        var adapter = MapLoadAdapter(data, this)
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(this)
+        adapter.setOnMapMenuClickListener(object : MapLoadAdapter.OnMapMenuClickListener {
+            override fun onStart(position: Int) {
+                dialog.show()
+                data.get(position).isLoading = true
+                adapter.notifyDataSetChanged()
+                Thread(object : Runnable {
+                    override fun run() {
+                        MapCopyUtil.copyFiles(path + "/amap/data/map/" + data.get(position).proviceValue,
+                                path + "/map/" + data.get(position).proviceValue)
+                        Thread.sleep(1000)
+                        var msg = Message()
+                        msg.what = 0
+                        msg.obj = position
+                        handler.sendMessage(msg)
+                    }
+                }).start()
             }
-            input.close()
-            output.close()
-        } catch (e: Exception) {
 
-        }
+            override fun onLongClick(position: Int) {
+                dialog.show()
+                Thread(object : Runnable {
+                    override fun run() {
+                        MapCopyUtil.delete(path + "/map/" + data.get(position).proviceValue)
+                        Thread.sleep(1000)
+                        var msg = Message()
+                        msg.what = 1
+                        msg.obj = position
+                        handler.sendMessage(msg)
+                    }
+                }).start()
+            }
+        })
     }
 
+    val handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            if (msg != null) {
+                var position = msg.obj as Int
+                when (msg.what) {
+                    0 -> {
+                        data.get(position).isLoad = true
+                        data.get(position).isLoading = false
+                        SPUtil.put(this@Main3Activity, data.get(position).proviceValue, true)
+                    }
+                    1 -> {
+                        data.get(position).isLoad = false
+                        data.get(position).isLoading = false
+                        SPUtil.put(this@Main3Activity, data.get(position).proviceValue, false)
+                    }
+                }
+                rv.adapter.notifyDataSetChanged()
+                dialog.dismiss()
+            }
+        }
+    }
 }

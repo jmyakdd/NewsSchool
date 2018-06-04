@@ -1,10 +1,21 @@
 package jmy.com.newsschool.bean;
 
+import java.util.List;
+
 public class ProviceData{
     private String proviceKey;
     private String proviceValue;
     private boolean isLoad;
     private boolean isLoading;
+    private List<CityData>cityData;
+
+    public List<CityData> getCityData() {
+        return cityData;
+    }
+
+    public void setCityData(List<CityData> cityData) {
+        this.cityData = cityData;
+    }
 
     public boolean isLoading() {
         return isLoading;

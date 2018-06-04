@@ -41,7 +41,7 @@ public class MapLoadAdapter extends RecyclerView.Adapter<MapLoadAdapter.MapViewH
 
     @Override
     public void onBindViewHolder(MapViewHolder holder, final int position) {
-        holder.name.setText(data.get(position).getProviceKey());
+        holder.name.setText(data.get(position).getProviceValue());
         if (data.get(position).isLoad()) {
             holder.download_progress_status.setText("导入完成");
             holder.download_status_image.setVisibility(View.GONE);
@@ -59,8 +59,6 @@ public class MapLoadAdapter extends RecyclerView.Adapter<MapLoadAdapter.MapViewH
             public void onClick(View view) {
                 if (onMapMenuClickListener != null && !data.get(position).isLoading()) {
                     onMapMenuClickListener.onStart(position);
-                    data.get(position).setLoading(true);
-                    notifyDataSetChanged();
                 }
             }
         });

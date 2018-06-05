@@ -1,10 +1,11 @@
 package jmy.com.newsschool.activity
 
+import android.Manifest
 import android.app.ProgressDialog
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.Message
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.*
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -26,13 +27,29 @@ class Main3Activity : AppCompatActivity() {
             private var data = ArrayList<ProviceData>()
     private lateinit var dialog: ProgressDialog
 
+    var permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.INSTALL_SHORTCUT,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main3)
         dialog = ProgressDialog(this)
         dialog.setTitle("导入中")
         dialog.setCancelable(false)
+        btn.setOnClickListener {
+            startActivity(Intent(this,Main4Activity::class.java))
+        }
         init()
+        for( p in permissions){
+            if(ContextCompat.checkSelfPermission(this,p)!= PackageManager.PERMISSION_GRANTED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    this.requestPermissions(permissions,100)
+                    return
+                }
+            }
+        }
     }
 
     private fun init() {

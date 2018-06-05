@@ -40,7 +40,8 @@ class Main2Activity : BaseTitleActivity(), BottomNavigationView.OnNavigationItem
     var map = HashMap<String, String>()
     var permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.INSTALL_SHORTCUT)
+            Manifest.permission.INSTALL_SHORTCUT,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

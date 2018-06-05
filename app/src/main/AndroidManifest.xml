@@ -39,17 +39,27 @@
                 android:resource="@xml/rc_file_path" />
         </provider>
 
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.Main2Activity"
             android:theme="@style/AppTheme">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
         <activity android:name=".activity.VedioPlayActivity" />
 
         <service android:name=".service.MyPlayingService" />
 
         <activity android:name=".activity.Main3Activity">
+
+        </activity>
+        <activity
+            android:name="com.amap.api.maps.offlinemap.OfflineMapActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".activity.Main4Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

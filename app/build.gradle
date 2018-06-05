@@ -70,4 +70,5 @@ dependencies {
     implementation 'com.classic.adapter:commonadapter:2.0'
     implementation 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
     compile 'org.litepal.android:core:1.5.1'
+    compile 'com.amap.api:3dmap:latest.integration'
 }

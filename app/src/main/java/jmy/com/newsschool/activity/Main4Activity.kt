@@ -1,36 +1,19 @@
-package jmy.com.newsschool.fragment
+package jmy.com.newsschool.activity
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.app.AppCompatActivity
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.LocationSource
 import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.MyLocationStyle
-import com.amap.api.maps.offlinemap.OfflineMapManager
+import com.amap.api.maps.offlinemap.OfflineMapActivity
 import jmy.com.newsschool.R
 import kotlinx.android.synthetic.main.fra_bbs.*
 
-/**
- * Created by CRTE-CD-13 on 2018/5/18.
- */
-class BbsFragment : Fragment(), AMap.OnMyLocationChangeListener, LocationSource, OfflineMapManager.OfflineMapDownloadListener {
-    override fun onDownload(p0: Int, p1: Int, p2: String?) {
-
-    }
-
-    override fun onCheckUpdate(p0: Boolean, p1: String?) {
-
-    }
-
-    override fun onRemove(p0: Boolean, p1: String?, p2: String?) {
-
-    }
-
+class Main4Activity : AppCompatActivity(), AMap.OnMyLocationChangeListener, LocationSource {
     override fun deactivate() {
 
     }
@@ -42,13 +25,9 @@ class BbsFragment : Fragment(), AMap.OnMyLocationChangeListener, LocationSource,
     override fun onMyLocationChange(p0: Location?) {
 
     }
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fra_bbs, null)
-        return view
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.fra_bbs)
         mapView.onCreate(savedInstanceState)
         var map = mapView.map
         var locationStyle = MyLocationStyle()
@@ -57,7 +36,7 @@ class BbsFragment : Fragment(), AMap.OnMyLocationChangeListener, LocationSource,
         map.setLocationSource(this)
         map.moveCamera(CameraUpdateFactory.changeLatLng(LatLng(30.5702000000, 104.0647600000)))
         download.setOnClickListener {
-//            startActivity(Intent(activity, OfflineMapActivity::class.java))
+            startActivity(Intent(this, OfflineMapActivity::class.java))
         }
     }
 
